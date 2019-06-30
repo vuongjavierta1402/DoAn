@@ -44,4 +44,13 @@
         android:layout_below="@+id/timePicker"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp" />
+
+    <TextView
+        android:id="@+id/textViewTimesend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/timePicker"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:text="Time send" />
 </RelativeLayout>

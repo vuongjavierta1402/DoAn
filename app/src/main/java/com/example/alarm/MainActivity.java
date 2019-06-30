@@ -40,7 +40,7 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
     Button btnStart, btnStop;
-    TextView textView;
+    TextView textView, textView1;
     TimePicker timePicker;
     Calendar calendar;
     AlarmManager alarmManager;
@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         btnStart = (Button) findViewById(R.id.btnStart);
         btnStop = (Button) findViewById(R.id.btnStop);
         textView = (TextView) findViewById(R.id.textView);
+        textView1 = (TextView) findViewById(R.id.textViewTimesend);
         timePicker = (TimePicker) findViewById(R.id.timePicker);
         calendar = Calendar.getInstance();
         alarmManager =(AlarmManager)getSystemService(ALARM_SERVICE);
@@ -99,12 +100,24 @@ public class MainActivity extends AppCompatActivity {
 
             cal_now.setTime(dat);
             cal_send.setTime(dat);
+            Calendar calendar_temp;
+            calendar_temp = Calendar.getInstance();
+            calendar_temp.setTime(dat);
             cal_send.set(Calendar.HOUR_OF_DAY, 03 );
             cal_send.set(Calendar.MINUTE, 00);
             cal_send.set(Calendar.SECOND,00);
             if (cal_send.compareTo(cal_now)<=0){
                 cal_send.add(Calendar.DATE, 1);
             }
+            else{
+//            else (cal_send.compareTo(cal_now)>0){
+                calendar_temp.add(Calendar.DATE,1);
+                if(calendar_temp.compareTo(cal_send) <0){
+                    cal_send.set(Calendar.DATE, cal_now.get(Calendar.DATE));
+                }
+
+            }
+
             intent.putExtra("extra", "send");
             Log.e("Time", cal_send.getTime().toString());
             Log.e("Time now", cal_now.getTime().toString());
@@ -112,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
                             1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             sendManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, cal_send.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingSendIntent);
-
+            textView1.setText(cal_send.getTime().toString());
             btnStart.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -161,15 +174,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private  void displayNotification(String s){
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(MainActivity.this, CHANNEL_ID)
-                        .setSmallIcon(R.drawable.ic_bell).setContentTitle("ALARM !!!").
-                        setContentText("").
-                        setPriority(NotificationCompat.PRIORITY_DEFAULT);
-        NotificationManagerCompat mNotificationMgr = NotificationManagerCompat.from(MainActivity.this);
-        mNotificationMgr.notify(1,mBuilder.build());
-    }
+//    private  void displayNotification(String s){
+//        NotificationCompat.Builder mBuilder =
+//                new NotificationCompat.Builder(MainActivity.this, CHANNEL_ID)
+//                        .setSmallIcon(R.drawable.ic_bell).setContentTitle("ALARM !!!").
+//                        setContentText("").
+//                        setPriority(NotificationCompat.PRIORITY_DEFAULT);
+//        NotificationManagerCompat mNotificationMgr = NotificationManagerCompat.from(MainActivity.this);
+//        mNotificationMgr.notify(1,mBuilder.build());
+//    }
 
     public static boolean hasPermissions(Context context, String... permissions) {
         if (context != null && permissions != null) {
