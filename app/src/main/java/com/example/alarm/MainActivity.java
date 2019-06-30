@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         if(!hasPermissions(this, PERMISSIONS)){
             ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
         }
-        else{
+
             Date dat = new Date();
 
 
@@ -171,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-        }
+
     }
 
 //    private  void displayNotification(String s){
