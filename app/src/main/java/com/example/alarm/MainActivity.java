@@ -106,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
             cal_send.set(Calendar.HOUR_OF_DAY, 03 );
             cal_send.set(Calendar.MINUTE, 00);
             cal_send.set(Calendar.SECOND,00);
+
             if (cal_send.compareTo(cal_now)<=0){
                 cal_send.add(Calendar.DATE, 1);
             }
@@ -116,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
                     cal_send.set(Calendar.DATE, cal_now.get(Calendar.DATE));
                 }
 
+
             }
 
             intent.putExtra("extra", "send");
@@ -125,7 +127,8 @@ public class MainActivity extends AppCompatActivity {
                             1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             sendManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, cal_send.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingSendIntent);
-            textView1.setText(cal_send.getTime().toString());
+            textView1.setText(cal_send.getTime().toString() );
+
             btnStart.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

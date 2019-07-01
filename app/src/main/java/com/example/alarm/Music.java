@@ -1,9 +1,13 @@
 package com.example.alarm;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.IBinder;
@@ -22,6 +26,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -112,15 +117,29 @@ public class Music extends Service {
                 String toAddress = "jt.vuong14@gmail.com";
 
                 String content = str;
+                boolean connected = false;
+                ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+                if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() != NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() != NetworkInfo.State.CONNECTED){
+                    WifiManager wifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
+                    wifiManager.setWifiEnabled(true);
 
-                boolean result = new SendMailAsync().execute(fromAddress, toAddress, subject,content ).get();
+                }
 
-                if(result){
-                    Toast.makeText(this, "Done!!",Toast.LENGTH_LONG).show();
-                }
-                else {
-                    Toast.makeText(this,"Failed!",Toast.LENGTH_LONG).show();
-                }
+                    try {
+                        //set time in mili
+                        Thread.sleep(7000);
+
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    boolean result = new SendMailAsync().execute(fromAddress, toAddress, subject, content).get();
+
+                    if (result) {
+                        Toast.makeText(this, "Done!!", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(this, "Failed!", Toast.LENGTH_LONG).show();
+                    }
 
             }catch (Exception e){
                 Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
